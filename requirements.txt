@@ -8,9 +8,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 joblib==0.16.0
 MarkupSafe==1.1.1
-numpy==1.19.1
 requests==2.24.0
-sklearn==0.0
 threadpoolctl==2.1.0
 urllib3==1.25.10
 Werkzeug==1.0.1
