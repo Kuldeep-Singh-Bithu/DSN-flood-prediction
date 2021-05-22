@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for
 
 import pickle
 import base64
-from training import prediction
+#from training import prediction
 import requests
 app = flask.Flask(__name__)
 
@@ -13,7 +13,7 @@ data = [{'name':'Delhi', "sel": "selected"}, {'name':'Mumbai', "sel": ""}, {'nam
 months = [{"name":"May", "sel": ""}, {"name":"June", "sel": ""}, {"name":"July", "sel": "selected"}]
 cities = [{'name':'Delhi', "sel": "selected"}, {'name':'Mumbai', "sel": ""}, {'name':'Kolkata', "sel": ""}, {'name':'Bangalore', "sel": ""}, {'name':'Chennai', "sel": ""}, {'name':'New York', "sel": ""}, {'name':'Los Angeles', "sel": ""}, {'name':'London', "sel": ""}, {'name':'Paris', "sel": ""}, {'name':'Sydney', "sel": ""}, {'name':'Beijing', "sel": ""}]
 
-model = pickle.load(open("model.pickle", 'rb'))
+#model = pickle.load(open("model.pickle", 'rb'))
 
 @app.route("/")
 @app.route('/index.html')
@@ -28,6 +28,10 @@ def plots():
 @app.route('/heatmaps.html')
 def heatmaps():
     return render_template('heatmaps.html')
+
+@app.route('/rescue.html')
+def rescue():
+    return render_template('rescue.html')
 
 @app.route('/satellite.html')
 def satellite():
@@ -74,7 +78,7 @@ def get_predicts():
         print(cityname)
         URL = "https://geocode.search.hereapi.com/v1/geocode"
         location = cityname
-        api_key = 'LHtLOXHyYWrAYEFNbXIQg8BM6PEY8Jryp88mmHYvAGw' # Acquire from developer.here.com
+        api_key = 'CYXB8HSKj06suWWgXtD6Hh9AUdmv4wqjuOV_MbVYudo' # Acquire from developer.here.com
         PARAMS = {'apikey':api_key,'q':location} 
         # sending get request and saving the response as response object 
         r = requests.get(url = URL, params = PARAMS) 
@@ -84,10 +88,10 @@ def get_predicts():
         final = prediction.get_data(latitude, longitude)
 
         final[4] *= 15
-        if str(model.predict([final])[0]) == "0":
-            pred = "Safe"
-        else:
-            pred = "Unsafe"
+        # if str(model.predict([final])[0]) == "0":
+        #     pred = "Safe"
+        # else:
+        #     pred = "Unsafe"
         
         return render_template('predicts.html', cityname="Information about " + cityname, cities=cities, temp=round(final[0], 2), maxt=round(final[1], 2), wspd=round(final[2], 2), cloudcover=round(final[3], 2), percip=round(final[4], 2), humidity=round(final[5], 2), pred = pred)
     except:
